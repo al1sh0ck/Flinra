@@ -2,3 +2,4 @@ Flask==2.2.2
 Flask-PyMongo==2.3.0
 Werkzeug==2.2.2
 Flask-SocketIO~=5.5.1
+pymongo~=4.11.1

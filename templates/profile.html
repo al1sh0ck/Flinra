@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Редактирование профиля</h1>
+        <form method="POST" action="{{ url_for('profile') }}">
+            <div class="avatar-section">
+                <img src="{{ user.avatar_url }}" alt="Avatar">
+            </div>
+
+            <label>Имя:</label>
+            <input type="text" name="name" value="{{ user.name }}" required>
+
+            <label>Имя пользователя:</label>
+            <input type="text" name="username" value="{{ user.username }}" required>
+
+            <label>Телефон:</label>
+            <input type="text" name="phone" value="{{ user.phone }}" required>
+
+            <label>Дата регистрации:</label>
+            <input type="text" value="{{ user.created_at.strftime('%Y-%m-%d') }}" disabled>
+
+            <div class="buttons">
+                <button type="submit">Сохранить</button>
+                <a href="{{ url_for('main') }}" class="back">⬅ Назад</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

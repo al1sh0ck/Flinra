@@ -1,98 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
-    <link rel="stylesheet" href="../static/teststyle.css">
-    <script defer src="../static/testjs.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App - Main</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='teststyle.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="sidebar">
-            <div class="navbar">
-                <button class="menu-btn">⋮</button>
-                <div class="nav-menu hidden">
-                    <a href="#">Profile</a>
-                    <a href="#">Settings</a>
-                    <a href="{{ url_for('signout') }}">Logout</a>
-                </div>
-            </div>
+  <div class="chat-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="user-profile">
+          <img src="{{ avatar_url }}" alt="Profile" class="profile-avatar">
+          <span class="profile-name">{{ name }}</span>
+        </div>
+        <button id="toggle-nav-menu" class="menu-btn"><i class="fas fa-bars"></i></button>
+      </div>
 
-            <div class="create-chat-buttons">
-                <button id="create-chat-button">Создать чат</button>
-                <button id="create-group-button">Создать беседу</button>
-            </div>
+      <div id="nav-menu" class="nav-menu hidden">
+        <a href="{{ url_for('profile') }}" class="nav-link"><i class="fas fa-user"></i> Profile</a>
+        <a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
+        <a href="{{ url_for('signout') }}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+      </div>
 
-            <!-- Modal for creating chat -->
-            <div id="create-chat-modal" class="modal hidden">
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <h3 class="modal-title">Создать чат</h3>
-                    <form id="create-chat-form" method="POST" action="{{ url_for('create_chat') }}">
-                        <div class="form-group">
-                            <label for="chat-user" class="form-label">Кому написать:</label>
-                            <input type="text" id="chat-user" name="recipient" class="form-input" placeholder="Имя пользователя" required>
-                        </div>
-                        <button type="submit" class="form-submit">Создать</button>
-                    </form>
-                </div>
-            </div>
+      <div class="create-chat-buttons">
+        <button id="create-chat-button" class="btn btn-primary"><i class="fas fa-plus"></i> New Chat</button>
+        <button id="create-group-button" class="btn btn-secondary"><i class="fas fa-users"></i> New Group</button>
+      </div>
 
-            <!-- Modal for creating group -->
-            <div id="create-group-modal" class="modal hidden">
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <h3 class="modal-title">Создать беседу</h3>
-                    <form id="create-group-form" method="POST" action="{{ url_for('create_group') }}">
-                        <div class="form-group">
-                            <label for="group-name" class="form-label">Название группы:</label>
-                            <input type="text" id="group-name" name="group_name" class="form-input" placeholder="Введите название" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="group-users" class="form-label">Добавить участников (через запятую):</label>
-                            <input type="text" id="group-users" name="users" class="form-input" placeholder="Пользователь1, Пользователь2" required>
-                        </div>
-                        <button type="submit" class="form-submit">Создать</button>
-                    </form>
-                </div>
+      <div class="chat-list">
+        <div class="chat-list-header">Chats</div>
+        <div id="chats-container">
+          {% for chat in chats %}
+          <div class="chat-item" data-chat-id="{{ chat._id }}">
+            <img src="{{ chat.avatar_url }}" alt="Avatar" class="chat-avatar">
+            <div class="chat-info">
+              <div class="chat-name">{{ chat.name }}</div>
+              <div class="chat-last-message">{{ chat.last_message }}</div>
             </div>
-
-            <div class="chat-list">
-    {% if chats %}
-        <h3>Чаты</h3>
-        {% for chat in chats %}
-            <div class="chat-item">
-                <img src="{{ chat.avatar }}" alt="Avatar" class="chat-avatar">
-                <div class="chat-info">
-                    <h4>{{ chat.participants[1] }}</h4>  <!-- Assuming it's a 2-person chat -->
-                    <p class="last-message">Last message here</p>  <!-- You can add logic to show the last message -->
-                </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No chats available</p>
-    {% endif %}
-
-    {% if groups %}
-        <h3>Группы</h3>
-        {% for group in groups %}
-            <div class="chat-item">
-                <img src="{{ group.avatar }}" alt="Group Avatar" class="chat-avatar">
-                <div class="chat-info">
-                    <h4>{{ group.name }}</h4>
-                    <p class="last-message">Last message here</p>  <!-- Show the last message here -->
-                </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No groups available</p>
-    {% endif %}
-
-            </div>
+          </div>
+          {% endfor %}
         </div>
 
-        <div class="chat-main"></div>
+        <div class="chat-list-header">Groups</div>
+        <div id="groups-container">
+          {% for group in groups %}
+          <div class="chat-item" data-group-id="{{ group._id }}">
+            <img src="{{ group.avatar_url }}" alt="Avatar" class="chat-avatar">
+            <div class="chat-info">
+              <div class="chat-name">{{ group.name }}</div>
+              <div class="chat-last-message">{{ group.last_message }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
+
+    <!-- Main Chat Area -->
+    <div class="chat-main">
+      <div class="chat-window hidden" id="chat-window">
+        <div class="chat-header">
+          <div class="chat-title" id="chat-title">Chat</div>
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+          <!-- Messages will be loaded here -->
+        </div>
+
+        <div class="chat-input">
+            <label for="message-input"></label><input type="text" id="message-input" placeholder="Type a message...">
+          <button id="attachFileBtn"><i class="fas fa-paperclip"></i></button>
+            <input type="file" id="fileInput" style="display: none;" multiple>
+            <div id="fileList"></div>
+          <button id="send-message"><i class="fas fa-paper-plane"></i></button>
+            <button id="editGroupBtn" style="margin-top: 10px;">✏️ Редактировать группу</button>
+        </div>
+      </div>
+
+      <div class="welcome-screen" id="welcome-screen">
+        <h2>Welcome to Chat App</h2>
+        <p>Select a chat or create a new one to start messaging</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div id="create-chat-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Create New Chat</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="chat-username" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label>First Message (optional)</label>
+        <input type="text" id="chat-first-message" placeholder="Enter message">
+      </div>
+      <button id="create-chat-confirm" class="btn btn-primary">Create Chat</button>
+    </div>
+  </div>
+
+  <div id="create-group-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Create New Group</h2>
+      <div class="form-group">
+        <label>Group Name</label>
+        <input type="text" id="group-name" placeholder="Enter group name">
+      </div>
+      <div class="form-group">
+        <label>Members (comma separated)</label>
+        <input type="text" id="group-members" placeholder="Enter usernames">
+      </div>
+      <div class="form-group">
+        <label>First Message (optional)</label>
+        <input type="text" id="group-first-message" placeholder="Enter message">
+      </div>
+      <button id="create-group-confirm" class="btn btn-primary">Create Group</button>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+<script src="/static/socket.io.min.js"></script>
 </body>
 </html>
