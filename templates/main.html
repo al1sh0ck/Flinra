@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="../static/teststyle.css">
+    <script defer src="../static/testjs.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="sidebar">
+            <div class="navbar">
+                <button class="menu-btn">⋮</button>
+                <div class="nav-menu hidden">
+                    <a href="#">Profile</a>
+                    <a href="#">Settings</a>
+                    <a href="{{ url_for('signout') }}">Logout</a>
+                </div>
+            </div>
+
+            <div class="create-chat-buttons">
+                <button id="create-chat-button">Создать чат</button>
+                <button id="create-group-button">Создать беседу</button>
+            </div>
+
+            <!-- Modal for creating chat -->
+            <div id="create-chat-modal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h3 class="modal-title">Создать чат</h3>
+                    <form id="create-chat-form" method="POST" action="{{ url_for('create_chat') }}">
+                        <div class="form-group">
+                            <label for="chat-user" class="form-label">Кому написать:</label>
+                            <input type="text" id="chat-user" name="recipient" class="form-input" placeholder="Имя пользователя" required>
+                        </div>
+                        <button type="submit" class="form-submit">Создать</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal for creating group -->
+            <div id="create-group-modal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h3 class="modal-title">Создать беседу</h3>
+                    <form id="create-group-form" method="POST" action="{{ url_for('create_group') }}">
+                        <div class="form-group">
+                            <label for="group-name" class="form-label">Название группы:</label>
+                            <input type="text" id="group-name" name="group_name" class="form-input" placeholder="Введите название" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="group-users" class="form-label">Добавить участников (через запятую):</label>
+                            <input type="text" id="group-users" name="users" class="form-input" placeholder="Пользователь1, Пользователь2" required>
+                        </div>
+                        <button type="submit" class="form-submit">Создать</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="chat-list">
+    {% if chats %}
+        <h3>Чаты</h3>
+        {% for chat in chats %}
+            <div class="chat-item">
+                <img src="{{ chat.avatar }}" alt="Avatar" class="chat-avatar">
+                <div class="chat-info">
+                    <h4>{{ chat.participants[1] }}</h4>  <!-- Assuming it's a 2-person chat -->
+                    <p class="last-message">Last message here</p>  <!-- You can add logic to show the last message -->
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No chats available</p>
+    {% endif %}
+
+    {% if groups %}
+        <h3>Группы</h3>
+        {% for group in groups %}
+            <div class="chat-item">
+                <img src="{{ group.avatar }}" alt="Group Avatar" class="chat-avatar">
+                <div class="chat-info">
+                    <h4>{{ group.name }}</h4>
+                    <p class="last-message">Last message here</p>  <!-- Show the last message here -->
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No groups available</p>
+    {% endif %}
+
+            </div>
+        </div>
+
+        <div class="chat-main"></div>
+    </div>
+</body>
+</html>

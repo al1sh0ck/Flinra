@@ -1,0 +1,20 @@
+FOR THE FIRST CONTROL WEEK
+1. Implementation of the application architecture
+2. Implementation the flow chart of the methodology
+3. SIGN-UP PAGE: Sign-Up page where the user need to enter the details like name,
+username, phone number, Avatar Url, and password to sign-Up
+4. SIGN-IN PAGE: From here registered users can sign-in using username and password.
+5. MAIN INTERFACE PAGE: The main interface where different options are available like
+user can create groups, can message any person in personal, can see how many users are
+online, etc.
+FOR THE SECOND CONTROL WEEK
+6. DIRECT MESSAGES PAGE: The interface from where user can directly message anyone
+registered on the application.
+7. CREATING CHANNEL: From here user can create group or channel and can add the other
+participants as per their convinience.
+8. GROUP MESSAGES PAGE: The group messages interface from where user can message
+on group and all the group members can view the messages.
+9. EDIT CHANNEL: From this page the user can edit the channel or group. and can add more
+group members.
+10. ATTACH FILES OPTION: From here user can send the attachment to the other person. by
+using this feature user can send pictures, videos, documents also.
